@@ -1,4 +1,4 @@
-use leptos::{html::table, svg::view, *};
+use leptos::*;
 
 #[component]
 fn RatioTable() -> impl IntoView {
@@ -20,51 +20,6 @@ fn RatioTable() -> impl IntoView {
         <Table hits={value}/>
     }
 }
-
-#[derive(Clone, Debug)]
-struct CritRate {
-    id: String,
-    rate: i32,
-}
-
-#[derive(Clone, Debug)]
-struct ParticleRate {
-    id: String,
-    rate: f64,
-}
-
-#[derive(Clone, Debug, Default)]
-struct ParticleRateRow {
-    row: Vec<ParticleRate>,
-    id: String,
-}
-
-fn calculate_table(hits: i32) -> Vec<ParticleRateRow> {
-    let crit_rates: [f64; 10] = std::array::from_fn(|i| (10 * (i + 1)) as f64);
-    let partical_emit_rates: [f64; 5] = std::array::from_fn(|i| 0.6 + 0.1 * i as f64);
-    let mut output = vec![];
-    for cr in crit_rates {
-        let mut prow = ParticleRateRow {
-            row: vec![],
-            id: "".to_string(),
-        };
-        for er in partical_emit_rates {
-            let no_particle_probability_single_hit: f64 = 1.0 - cr / 100.0 * er;
-            let percent = 1.0 - no_particle_probability_single_hit.powi(hits);
-            let prate = ParticleRate {
-                id: format!("{cr}_{er}"),
-                rate: percent,
-            };
-            prow.id.push_str(&prate.id);
-            prow.row.push(prate);
-        }
-        output.push(prow);
-    }
-
-    output
-}
-
-// const CRITRATE = (10..=100).step_by(10);
 
 fn no_particle_table() -> [[f64; 10]; 5] {
     // Crit rates for 10%, 20%, ..., 100%.
@@ -96,11 +51,11 @@ fn PercentTableData(hits: ReadSignal<i32>, non_emit_prob: f64) -> impl IntoView 
 
 #[component]
 fn TableBody(hits: ReadSignal<i32>) -> impl IntoView {
-    let another_table = no_particle_table();
+    let table_data = no_particle_table();
 
     view! {
         <th rowspan="6" scope="rowgroup" class="is-centered is-vcentered">精錬ランク</th>
-        {another_table.into_iter().enumerate().map(
+        {table_data.into_iter().enumerate().map(
             |(i, row)| {
                 view! {
                     <tr>
