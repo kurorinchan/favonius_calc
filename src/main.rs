@@ -21,7 +21,7 @@ fn RatioTable() -> impl IntoView {
     };
 
     view! {
-        <div># of hits</div>
+        <div>ヒット回数</div>
         <div>
             <input type="number" prop:value=value on:input=on_input_change/>
         </div>
@@ -175,6 +175,10 @@ fn ColorModeSwitcher() -> impl IntoView {
 fn main() {
     mount_to(document().body().expect("should have body"), move || {
         view! {
+            <h1>"西風武器の粒子生成表"</h1>
+            <div>
+                "西風武器で攻撃した回数と粒子生成率を計算したテーブルです。"
+            </div>
             <ColorModeSwitcher/>
             <RatioTable/>
         }
