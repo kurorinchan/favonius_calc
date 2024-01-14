@@ -1,0 +1,13 @@
+table td {
+    font-family: monospace;
+    width: 50px;
+    word-wrap: normal;
+}
+
+table th {
+    width: 3ch;
+}
+
+body {
+    width: 1000px;
+}
